@@ -1,5 +1,0 @@
-http://www.robotamer.com/code/go/gotamer/gob.html
-
-sudo  ulimit -u 10000
-
-dig @127.0.0.1 www.ifeng.com
