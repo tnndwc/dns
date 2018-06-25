@@ -19,6 +19,7 @@ type Job struct {
 }
 
 func worker(id int, jobs <-chan Job, wfJob chan<- string) {
+	log.Println("start work(", id, ").")
 	for j := range jobs {
 		doWork(j, wfJob)
 	}
