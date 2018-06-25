@@ -68,7 +68,7 @@ func loadEndpointsFromFile() {
 		t, _ := strconv.Atoi(arr[1])
 		baseLookup(arr[0], uint16(t), nil)
 	}
-	log.Println("--------writeFileWorker() done")
+	log.Println("writeFileWorker() done")
 }
 
 func doWork(job Job, wfJob chan<- string) {
