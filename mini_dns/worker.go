@@ -24,7 +24,7 @@ func worker(id int, jobs <-chan Job, wfJob chan<- *string) {
 }
 
 func flushDNSEndpoints(jobs chan *string) {
-	filePath := filepath.Join(*confFolder, "dns.file")
+	filePath := filepath.Join(*confFolder, "dns.cache.file")
 	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0600)
 	if err != nil {
 		panic(err)
@@ -64,7 +64,7 @@ func Start(workerSize int, queueSize int) chan<- Job {
 }
 
 func loadEndpointsFromFile() {
-	cf, _ := os.Open(filepath.Join(*confFolder, "dns.file"))
+	cf, _ := os.Open(filepath.Join(*confFolder, "dns.cache.file"))
 	defer cf.Close()
 	scanner := bufio.NewScanner(cf)
 	for scanner.Scan() {
