@@ -1,4 +1,4 @@
-cd mini_dns_server
+cd mini_dns
 
 go build -o dns
 
