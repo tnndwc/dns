@@ -1,4 +1,4 @@
-cd mini_dns
+cd funny
 
 go build -o dns
 
