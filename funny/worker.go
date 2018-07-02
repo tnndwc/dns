@@ -71,12 +71,12 @@ func loadEndpointsFromFile() {
 		arr := strings.Split(scanner.Text(), ";")
 		t, _ := strconv.Atoi(arr[1])
 		_, key := baseLookup(arr[0], uint16(t), nil)
-		answer, _ := dnsAnswerMap.Load(*key)
-		dNSAnswer := answer.(DNSAnswer)
-		dNSAnswer.syncedFile = true
-		dnsAnswerMap.Store(*key, dNSAnswer)
-		answer, _ = dnsAnswerMap.Load(*key)
-		fmt.Println(answer)
+		if key != nil {
+			answer, _ := dnsAnswerMap.Load(*key)
+			dNSAnswer := answer.(DNSAnswer)
+			dNSAnswer.syncedFile = true
+			dnsAnswerMap.Store(*key, dNSAnswer)
+		}
 	}
 	log.Println("flushDNSEndpoints() done")
 }
