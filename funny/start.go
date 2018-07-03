@@ -18,7 +18,7 @@ var workers chan<- Job
 
 var confFolder *string
 
-func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
+func (hd *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 	workers <- Job{&w, r}
 }
 
