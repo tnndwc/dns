@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
 	"github.com/dns"
 	"sync"
 	"flag"
 	"path/filepath"
+	"github.com/golang/glog"
 )
 
 var dnsAnswerMap sync.Map
@@ -32,6 +32,6 @@ func main() {
 	srv := &dns.Server{Addr: *dnsHost + ":" + *dnsPort, Net: "udp"}
 	srv.Handler = &handler{}
 	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("Failed to set udp listener %s\n", err.Error())
+		glog.Fatalf("Failed to set udp listener %s\n", err.Error())
 	}
 }

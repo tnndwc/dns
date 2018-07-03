@@ -4,11 +4,10 @@ import (
 	"github.com/dns"
 	"strconv"
 	"os"
-	"log"
 	"path/filepath"
 	"bufio"
 	"strings"
-	"fmt"
+	"github.com/golang/glog"
 )
 
 type Job struct {
@@ -17,7 +16,7 @@ type Job struct {
 }
 
 func worker(id int, jobs <-chan Job, wfJob chan<- *string) {
-	log.Println("start work(", id, ").")
+	glog.Infoln("start work(", id, ").")
 	for j := range jobs {
 		doWork(j, wfJob)
 	}
@@ -31,14 +30,14 @@ func flushDNSEndpoints(jobs chan *string) {
 	}
 	defer func() {
 		f.Close()
-		log.Println("flushDNSEndpoints error")
+		glog.Infoln("flushDNSEndpoints error")
 	}()
 
 	var answer interface{}
 	for endpoint := range jobs {
 		answer, _ = dnsAnswerMap.Load(*endpoint)
 		if answer == nil || !(answer.(DNSAnswer).syncedFile) {
-			log.Println(fmt.Printf("write file: %s\n", *endpoint))
+			glog.Infof("write file: %s\n", *endpoint)
 			if _, err = f.WriteString(*endpoint + "\n"); err != nil {
 				panic(err)
 			}
@@ -59,7 +58,7 @@ func Start(workerSize int, queueSize int) chan<- Job {
 	for i := 0; i < workerSize; i++ {
 		go worker(i, jobs, wfJobs)
 	}
-	log.Println("Start() done")
+	glog.Infoln("Start() done")
 	return jobs
 }
 
@@ -78,23 +77,17 @@ func loadEndpointsFromFile() {
 			dnsAnswerMap.Store(*key, dNSAnswer)
 		}
 	}
-	log.Println("flushDNSEndpoints() done")
+	glog.Infoln("flushDNSEndpoints() done")
 }
 
 func doWork(job Job, wfJob chan<- *string) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println(err)
+			glog.Errorln(err)
 		}
 	}()
 	msg := dns.Msg{}
 	msg.SetReply(job.r)
-
-	/*for _, e := range r.Question {
-		fmt.Println(e.String())
-	}*/
-
-	//fmt.Println("dns.Type: " + strconv.Itoa(int(r.Question[0].Qtype)))
 
 	domain := msg.Question[0].Name
 	dnsType := job.r.Question[0].Qtype
