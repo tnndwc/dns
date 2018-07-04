@@ -46,9 +46,7 @@ func flushDNSEndpoints(jobs chan *string) {
 }
 
 func Start(workerSize int, queueSize int) chan<- Job {
-	go func() {
-		loadEndpointsFromFile()
-	}()
+	loadEndpointsFromFile()
 
 	jobs := make(chan Job, queueSize)
 	wfJobs := make(chan *string, 1000)
@@ -69,13 +67,7 @@ func loadEndpointsFromFile() {
 	for scanner.Scan() {
 		arr := strings.Split(scanner.Text(), ";")
 		t, _ := strconv.Atoi(arr[1])
-		_, key := baseLookup(arr[0], uint16(t), nil)
-		if key != nil {
-			answer, _ := dnsAnswerMap.Load(*key)
-			dNSAnswer := answer.(DNSAnswer)
-			dNSAnswer.syncedFile = true
-			dnsAnswerMap.Store(*key, dNSAnswer)
-		}
+		baseLookup(arr[0], uint16(t), nil, nil)
 	}
 	glog.Infoln("flushDNSEndpoints() done")
 }
