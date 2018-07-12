@@ -30,7 +30,7 @@ func baseLookup(domain string, dnsType uint16, msg *dns.Msg, wfJob chan<- *strin
 		dnsAnswer := answer.(DNSAnswer)
 		duration := time.Since(dnsAnswer.refreshTime)
 		glog.Infoln(duration.Minutes())
-		if duration.Minutes() < 10 {
+		if duration.Minutes() < 60 {
 			glog.Infof("Load answer from cache: %s  <-> ", key, dnsAnswer.answer)
 			if msg != nil {
 				msg.Answer = dnsAnswer.answer

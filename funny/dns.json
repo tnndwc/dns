@@ -1,5 +1,5 @@
 {
   "listen": "127.0.0.1:60053",
-  "dnsPath": "/Users/Len/Code/VisualStudioCode/go/src/github.com/dns/funny/resolv.conf",
-  "dnsCacheDir": "/Users/Len/Code/VisualStudioCode/go/src/github.com/dns/funny"
+  "dnsPath": "resolv.conf",
+  "dnsCacheDir": "dns/funny"
 }
