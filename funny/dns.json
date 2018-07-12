@@ -1,5 +1,5 @@
 {
-  "listen": "127.0.0.1:60053",
+  "listen": "127.0.0.1:53",
   "dnsPath": "resolv.conf",
   "dnsCacheDir": "dns/funny"
 }
